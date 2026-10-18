@@ -1,5 +1,4 @@
 """Small grid-geometry helpers.
-
 Positions are (row, col). Row 0 is the TOP row, col 0 is the LEFT column.
 A move is a (d_row, d_col) delta.
 """
