@@ -42,9 +42,10 @@ class CyclicPattern(MovementPattern):
         self._i = 0
 
     def peek(self, agent, world) -> Pos:
-        return self.moves[self._i]
+        return self.moves[self._i]     # next move, not used up yet
 
     def advance(self) -> None:
+        # % makes the list start again at 0 when we reach the end
         self._i = (self._i + 1) % len(self.moves)
 
     def state(self):

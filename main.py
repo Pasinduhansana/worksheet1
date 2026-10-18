@@ -1,21 +1,14 @@
-"""Command-line entry point.
-
-    python main.py part1                      # Part 1 with defaults
-    python main.py part2                      # Part 2, 3 runs, 4 agents
-    python main.py part2 --hunter             # Part 2 + challenge agent
-    python main.py all                        # everything
-Run `python main.py <command> -h` for all options.
-"""
 import argparse
 import sys
 
+# the actual simulations live in the experiments folder
 from experiments import part1, part2
 
-
+# utility functions for parsing command line arguments
 def csv(value: str):
     return [v.strip() for v in value.split(",") if v.strip()]
 
-
+# Checking valid list of agent names
 def canonical(names, allowed):
     """Match user input case-insensitively against the allowed agent names."""
     lookup = {a.lower(): a for a in allowed}
@@ -28,7 +21,7 @@ def canonical(names, allowed):
         sys.exit(f"List every agent exactly once: {', '.join(allowed)}")
     return out
 
-
+# Build the command line parser
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="6COM2012 Worksheet 1 - Co-existing agents")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -53,9 +46,10 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("all", help="run Part 1, Part 2 and Part 2 with the Hunter")
     return p
 
-
+# Main entry point
 def main(argv=None) -> None:
     args = build_parser().parse_args(argv)
+    # the three agent names are always the same in Part 1
     names = list(part1.DEFAULT_ORDER)
 
     if args.cmd == "part1":

@@ -28,7 +28,7 @@ def detect_cycle(states: Sequence[Hashable]) -> Optional[Tuple[int, int]]:
     """
     seen: Dict[Hashable, int] = {}
     for i, s in enumerate(states):
-        if s in seen:
+        if s in seen:               # same state again -> we have a cycle
             return seen[s], i - seen[s]
         seen[s] = i
     return None

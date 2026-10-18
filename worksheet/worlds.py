@@ -66,6 +66,7 @@ class GridWorld:
     def step(self) -> List[Event]:
         t = self.step_count
         new_events: List[Event] = []
+        # one turn per agent, in the fixed move order
         for agent in self.move_order:
             if agent.status == REMOVED:
                 continue
@@ -114,9 +115,10 @@ class WrapWorld(GridWorld):
 
     def _resolve_move(self, agent, delta, t, events) -> bool:
         r, c = add(agent.position, delta)
-        target = (r % self.rows, c % self.cols)
+        target = (r % self.rows, c % self.cols)   # % wraps around the edge
         blocker = self.agent_at(target)
         if blocker is not None and blocker is not agent:
+            # field is taken -> move is cancelled
             events.append(Event(t, BLOCKED, target, (agent.name, blocker.name)))
             return False
         agent.position = target
@@ -136,6 +138,7 @@ class PushWorld(GridWorld):
         target = add(origin, delta)
 
         if not self.in_bounds(target):
+            # walked (or was pushed) off the platform -> out for good
             mover.status = REMOVED
             mover.position = None
             how = ("walked off the grid" if pusher is None

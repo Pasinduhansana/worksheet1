@@ -32,6 +32,7 @@ class Scenario:
 
 
 SCENARIOS: List[Scenario] = [
+    # 3 runs, each with different start fields and a different move order
     Scenario("Run 1",
              starts={"Clockwise": (1, 1), "Diamond": (1, 3), "Left": (3, 3),
                      "Random": (3, 1), "Hunter": (2, 2)},
@@ -58,7 +59,7 @@ def build_world(scn: Scenario, with_hunter: bool = False) -> PushWorld:
         Agent("Random",    "R", RandomWalk(scn.seed), scn.starts["Random"]),
     ]
     order = [n for n in scn.order if n != "Hunter"]
-    if with_hunter:
+    if with_hunter:     # only used for the optional challenge
         agents.append(Agent("Hunter", "H", EdgePusher(), scn.starts["Hunter"]))
         order = list(scn.order)
     return PushWorld(GRID_SIZE, GRID_SIZE, agents, move_order=order)
@@ -91,6 +92,7 @@ def run_scenario(scn: Scenario, steps: int = STEPS, with_hunter: bool = False,
                 out("  " + e.describe())
 
     world.run(steps, on_step)
+    # everyone still on the platform counts as a survivor
     survivors = [a.name for a in world.survivors()]
     out(f"  RESULT after {steps} steps: {len(survivors)} agent(s) remain "
         f"-> {survivors if survivors else 'nobody'}")

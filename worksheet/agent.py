@@ -23,6 +23,7 @@ REMOVAL = "removal"
 
 @dataclass
 class Agent:
+    # one agent = its name, symbol, behaviour and current position
     name: str
     symbol: str                 # single character used in the ASCII display
     pattern: "MovementPattern"

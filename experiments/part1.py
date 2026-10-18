@@ -39,6 +39,7 @@ def build_world(start_order: Sequence[str] = DEFAULT_ORDER,
     agents = []
     for i, name in enumerate(start_order):
         symbol, factory = AGENT_SPECS[name]
+        # i * START_GAP gives each agent a different start time (0, 2, 4)
         agents.append(Agent(name, symbol, factory(), RED_FIELD,
                             start_time=i * START_GAP))
     return WrapWorld(GRID_SIZE, GRID_SIZE, agents,
@@ -72,7 +73,7 @@ def run(steps: int = 50,
     out("=" * 70)
 
     def on_step(w: WrapWorld, events: List[Event]) -> None:
-        history.append(w.snapshot())
+        history.append(w.snapshot())    # save state so we can find the pattern later
         if show:
             out(f"\n-- after step t={w.step_count - 1:03d} --")
             out(render(w, mark=RED_FIELD))

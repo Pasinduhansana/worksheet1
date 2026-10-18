@@ -7,6 +7,7 @@ from typing import Tuple
 
 Pos = Tuple[int, int]
 
+# a move is just (row change, col change), e.g. DOWN = one row further down
 STAY: Pos = (0, 0)
 UP: Pos = (-1, 0)
 DOWN: Pos = (1, 0)
